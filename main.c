@@ -5,7 +5,7 @@
 //1..9
 //() +-*/ <space>
 
-extern double calculate(char*);
+extern long calculate(char*);
 
 //check the validity of the symbols used inside the expression
 bool check_expr_validity(char* expr) {
@@ -24,11 +24,11 @@ int main() {
 	expression[EXPR_SIZE-1] = 10;
 	printf("expression: %s\n", expression);
 	printf("valid? %d\n", check_expr_validity(expression));
-	double result = 0;
+	long result = 0;
 	if(check_expr_validity(expression)){
 		result = calculate(expression);
 	}
-	printf("result: %f\n", result);
+	printf("result: %ld\n", result);
 
 	return 0;
 }
