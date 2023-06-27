@@ -7,9 +7,13 @@ main.o: main.c
 compute.o: compute.s
 	clang --target=aarch64-elf -Wall -g -c compute.s -o compute.o
 
-ass:
+compute:
 	clang --target=aarch64-elf -Wall -g -c compute.s -o compute.o
 	ld.lld -nostdlib compute.o -o prog
+
+convert:
+	clang --target=aarch64-elf -Wall -g -c RPN_converter.s -o RPN_converter.o
+	ld.lld -nostdlib RPN_converter.o -o prog
 
 clean:
 	rm *.o
