@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define EXPR_SIZE 10
+#define EXPR_SIZE 50
 //1..9
 //() +-*/ <space>
 
@@ -21,14 +21,20 @@ bool check_expr_validity(char* expr) {
 	return true;
 }
 
-int covert_to_RPN(char* expr) {
+int convert_to_RPN(char* expr) {
 	char new_expr[EXPR_SIZE];
+	for(int i = 0; i < EXPR_SIZE; i++) {
+		new_expr[i] = 0;
+	}
 	char stack[50];
 	int expr_index = 0;
 	int s_index = 0;
 	for(int i = 0; i < EXPR_SIZE; i++) {
 		char c = expr[i];
-		if(c >= '0' && c <= '9') {
+		if(c == '\n') {
+			break;
+		}
+		else if(c >= '0' && c <= '9') {
 			new_expr[expr_index] = c;
 			expr_index += 1;
 		}
@@ -51,27 +57,58 @@ int covert_to_RPN(char* expr) {
 			}
 		}
 		else {
-			while(true){	//bisogna fare qualcosa per sto ciclo
-				char stack_top = stack[s_index];
-				if(stack_top == '+' || stack_top == '-' || stack_top == '(') {
-					if(c == '*' || c == '/') {
-						s_index += 1;
-						stack[s_index] = c;
+			if(s_index == 0) {
+				printf("push di %c\n", c);
+				s_index++;
+				stack[s_index] = c;
+			}
+			else{
+				while(true){
+					char stack_top = stack[s_index];
+					if(stack_top == '(') {
+						break;
+					}
+					if(stack_top == '+' || stack_top == '-') {
+						printf("comparo %c con %c\n", stack_top, c);
+						if (c == '+' || c == '-') {
+							printf("pop di %c\n", stack_top);
+							new_expr[expr_index] = stack[s_index];
+							s_index -= 1;
+							expr_index += 1;
+							if(s_index == 0) {
+								printf("breakko\n");
+								break;
+							}
+							else continue;
+						}
+						else {
+							break;
+						}
+
 					}
 					else {
-						//ci va lo stesso codice che c'è nell'if sotto
-					}
-				}
-				else {
-					if( c == '*' || c == '\') {
 						new_expr[expr_index] = stack[s_index];
 						s_index -= 1;
 						expr_index += 1;
+						if(s_index == 0) {
+							break;
+						}
+						else continue;
 					}
 				}
+				printf("push di %c\n", c);
+				s_index++;
+				stack[s_index] = c;
 			}
 		}
 	}
+	while(s_index > 0) {
+		new_expr[expr_index] = stack[s_index];
+		s_index -= 1;
+		expr_index += 1;
+	}
+	printf("conversione: %s\n", new_expr);
+	return 1;
 
 
 }
@@ -83,10 +120,11 @@ int main() {
 	printf("expression: %s\n", expression);
 	printf("valid? %d\n", check_expr_validity(expression));
 	long result = 0;
-	if(check_expr_validity(expression)){
-		result = calculate(expression);
-	}
-	printf("result: %ld\n", result);
+	convert_to_RPN(expression);
+/*	if(check_expr_validity(expression)){*/
+/*		result = calculate(expression);*/
+/*	}*/
+/*	printf("result: %ld\n", result);*/
 
 	return 0;
 }
