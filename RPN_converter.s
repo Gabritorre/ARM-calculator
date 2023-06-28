@@ -29,6 +29,8 @@ open_bracket:		//check if the character is an open parenthesis
 close_bracket:		//check if the character is a close parenthesis
 	cmp w10, #')'
 	b.ne operators
+	mov w12, #32
+	strb w12,[x1], #1		// add a space before the operators to the output string
 find_open_bracket:
 	cmp x2, #0	//if the stack is empty then quit with an error
 	b.eq error_exit
@@ -90,6 +92,10 @@ empty_the_stack:
 	b.eq exit
 	ldrb w10, [sp], #16
 	add x2, x2, #-1
+	cmp w10, #'('
+	b.eq error_exit
+	mov w12, #32		//add a space before the operator
+	strb w12, [x1], #1
 	strb w10, [x1] , #1
 	b empty_the_stack
 
@@ -97,11 +103,11 @@ exit:
 	// add \n to the end of the output string
 	mov w10, #10
 	strb w10, [x1]
-	mov x0, #0
+	mov w0, #0
 	ret
 
 error_exit:		//if the parenthesis are not balanced return -1
-	mov x0, #-1
+	mov w0, #-1
 	ret
 
 /*
@@ -119,7 +125,7 @@ _start:
 	.data
 	.p2align 2
 	.global str
-str: .string "1+2)\n"
+str: .string "1+(4-2\n"
 res: .string "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 */

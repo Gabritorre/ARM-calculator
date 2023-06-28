@@ -26,6 +26,8 @@ int convert_to_RPN(char* expr) {
 		else if(c == ')') {
 			c = stack[s_index];
 			s_index -= 1;
+			new_expr[expr_index] = ' ';
+			expr_index += 1;
 			while(c != '(' && s_index >= 0) {
 				new_expr[expr_index] = c;
 				expr_index += 1;
@@ -80,6 +82,8 @@ int convert_to_RPN(char* expr) {
 		}
 	}
 	while(s_index > 0) {
+		new_expr[expr_index] = ' ';
+		expr_index += 1;
 		new_expr[expr_index] = stack[s_index];
 		s_index -= 1;
 		expr_index += 1;
