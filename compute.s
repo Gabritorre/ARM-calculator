@@ -4,6 +4,7 @@
 	.global calculate
 
 calculate:
+	ret
 	mov x3, #0	//count how many digits have the number
 parse_number:
 	ldrb w1, [x0]
@@ -36,7 +37,7 @@ exit:
 	ret
 
 
-
+/*
 	.global _start
 _start:
 	adr x0, str
@@ -51,4 +52,4 @@ _start:
 	.p2align 2
 	.global str
 str: .string "123\n"
-
+*/

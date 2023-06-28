@@ -1,6 +1,3 @@
-//TODO
-// add a space in the output string when encounter a operator
-
 
 	.text
 	.p2align 2
@@ -33,6 +30,9 @@ close_bracket:		//check if the character is a close parenthesis
 	cmp w10, #')'
 	b.ne operators
 find_open_bracket:
+	cmp x2, #0	//if the stack is empty then quit with an error
+	b.eq error_exit
+
 	ldrb w10, [sp], #16		//pop from the stack
 	add x2, x2, #-1		//decrement the stack counter
 	cmp w10, #'('
@@ -42,6 +42,8 @@ find_open_bracket:
 
 
 operators:			//check if the character is a operator
+	mov w11, #32	//if the character is a operator add a space in the output string
+	strb w11, [x1], #1
 	cmp x2, #0
 	b.ne loop_priority
 	strb w10, [sp, #-16]!		//push operator in the stack
@@ -95,8 +97,14 @@ exit:
 	// add \n to the end of the output string
 	mov w10, #10
 	strb w10, [x1]
+	mov x0, #0
 	ret
 
+error_exit:		//if the parenthesis are not balanced return -1
+	mov x0, #-1
+	ret
+
+/*
 	.global _start
 _start:
 	adr x0, str
@@ -111,6 +119,7 @@ _start:
 	.data
 	.p2align 2
 	.global str
-str: .string "5+(6*(4+1)/2)+(5-1-2-3*(1*3))\n"
-res: .string "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+str: .string "1+2)\n"
+res: .string "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
+*/
