@@ -89,7 +89,8 @@ exit:
 	ret
 
 error_exit:
-	mov x10, #0
+	add sp, sp, x7, lsl #4		//reset the stack to the initial state
+	mov x10, #1
 	str x10, [x1]
 	ret
 

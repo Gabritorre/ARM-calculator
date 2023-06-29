@@ -17,7 +17,7 @@ clean:
 	rm *.o
 
 debug: FLAGS += -g
-debug: all
+debug: clean all
 
 
 

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 #define EXPR_SIZE 64
@@ -33,15 +32,13 @@ int main() {
 	if(check_expr_validity(expression)) {
 		if(-1 == convert_to_RPN(expression, expression_rpn)) {
 			printf("Conversion Error: the input expression is not valid\n");
-			exit(0);
 		}
 		else {
 			//printf("RPN expression: %s\n", expression_rpn);
-			int error = 1;
+			int error = 0;
 			result = calculate(expression_rpn, &error);
-			if(error == 0){
+			if(error == 1){
 				printf("Computation Error: the input expression is not valid\n");
-				exit(0);
 			}
 			else{
 				printf("Result: %ld\n", result);
@@ -50,7 +47,5 @@ int main() {
 	}
 	else {
 		printf("Error: unknown character found in the input expression\n");
-		exit(0);
 	}
-
 }

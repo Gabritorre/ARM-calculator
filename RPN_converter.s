@@ -100,6 +100,9 @@ empty_the_stack:
 	b empty_the_stack
 
 exit:
+	//ad a space in the output string (fundamental when the expression is only a number)
+	mov w10, #32
+	strb w10, [x1], #1
 	// add \n to the end of the output string
 	mov w10, #10
 	strb w10, [x1]
@@ -107,6 +110,7 @@ exit:
 	ret
 
 error_exit:		//if the parenthesis are not balanced return -1
+	add sp, sp, x2, lsl #4		//reset the stack pointer to the initial state
 	mov w0, #-1
 	ret
 
